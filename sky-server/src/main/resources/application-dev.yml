@@ -6,3 +6,8 @@ sky:
     database: sky_take_out
     username: snow
     password: 820820328Zz
+  alioss:
+    endpoint: oss-cn-beijing.aliyuncs.com
+    access-key-id: LTAI5tQZigmvdi1vgesVUArc
+    access-key-secret: awCz9KreFszpRSuDbIzd2ig6UwnXR3
+    bucket-name: snowcrane
