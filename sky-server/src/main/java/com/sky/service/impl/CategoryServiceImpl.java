@@ -34,6 +34,10 @@ public class CategoryServiceImpl implements CategoryService{
     @Autowired
     private SetmealMapper setmealMapper;
 
+    /**
+     * 新增分类
+     * @param categoryDTO
+     */
     @Override
     public void save(CategoryDTO categoryDTO) {
         Category category = new Category();
@@ -87,6 +91,11 @@ public class CategoryServiceImpl implements CategoryService{
         return categoryMapper.list(type);
     }
 
+    /**
+     * 启用禁用分类
+     * @param status
+     * @param id
+     */
     @Override
     public void startOrStop(Integer status, Long id) {
         Category category = Category.builder()

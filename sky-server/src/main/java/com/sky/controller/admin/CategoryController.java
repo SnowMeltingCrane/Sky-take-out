@@ -77,6 +77,12 @@ public class CategoryController {
         return Result.success();
     }
 
+    /**
+     * 启用禁用分类
+     * @param status
+     * @param id
+     * @return
+     */
     @PostMapping("/status/{status}")
     @ApiOperation("启用禁用分类")
     public Result<String> startOrStop(@PathVariable Integer status,Long id) {
@@ -85,6 +91,11 @@ public class CategoryController {
         return Result.success();
     }
 
+    /**
+     * 根据类型查询分类
+     * @param type
+     * @return
+     */
     @GetMapping("/list")
     @ApiOperation("根据类型查询分类")
     public Result<List<Category>> list(Integer type) {

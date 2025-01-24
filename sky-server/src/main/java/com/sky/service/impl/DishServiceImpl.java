@@ -9,12 +9,15 @@ import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
+import com.sky.entity.Setmeal;
 import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetmealDishMapper;
+import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
 import com.sky.service.DishService;
+import com.sky.service.SetmealService;
 import com.sky.vo.DishVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +38,11 @@ public class DishServiceImpl implements DishService {
     public DishFlavorMapper dishFlavorMapper;
     @Autowired
     public SetmealDishMapper setmealDishMapper;
+    @Autowired
+    private SetmealService setmealService;
+    @Autowired
+    private SetmealMapper setmealMapper;
+
     /**
      * 新增菜品
      * @param dishDTO
@@ -134,5 +142,39 @@ public class DishServiceImpl implements DishService {
         BeanUtils.copyProperties(dish,dishVO);
         dishVO.setFlavors(dishFlavors);
         return dishVO;
+    }
+
+    /**
+     * 启售停售菜品
+     * @param status
+     * @param id
+     */
+    @Override
+    public void startOrStop(Integer status, Long id) {
+        List<Long> setmealIds = setmealDishMapper.getSetmealIdsByDishId(id);
+        if(setmealIds!=null&& !setmealIds.isEmpty()&& Objects.equals(status, StatusConstant.DISABLE)){
+            setmealIds.forEach(setmealId -> {
+                setmealService.startOrStop(StatusConstant.DISABLE,setmealId);
+            });
+        }
+        Dish dish = Dish.builder()
+                .id(id)
+                .status(status)
+                .build();
+        dishMapper.update(dish);
+    }
+
+    /**
+     * 根据分类id查询菜品
+     * @param categoryId
+     * @return
+     */
+    @Override
+    public List<Dish> list(Long categoryId) {
+        Dish dish = Dish.builder()
+                .categoryId(categoryId)
+                .status(StatusConstant.ENABLE)
+                .build();
+        return dishMapper.list(dish);
     }
 }

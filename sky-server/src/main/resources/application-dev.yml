@@ -6,6 +6,11 @@ sky:
     database: sky_take_out
     username: snow
     password: 820820328Zz
+  redis:
+    host: 121.199.66.74
+    port: 6379
+    password: 820820328Zz
+    database: 10
   alioss:
     endpoint: oss-cn-beijing.aliyuncs.com
     access-key-id: LTAI5tQZigmvdi1vgesVUArc
