@@ -16,3 +16,6 @@ sky:
     access-key-id: LTAI5tQZigmvdi1vgesVUArc
     access-key-secret: awCz9KreFszpRSuDbIzd2ig6UwnXR3
     bucket-name: snowcrane
+  wechat:
+    appid: wxe8b49e02e5daac17
+    secret: 55a2c256fc9a60eb64fb107c93d4e01c
