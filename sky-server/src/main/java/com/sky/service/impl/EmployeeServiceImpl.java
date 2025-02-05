@@ -9,6 +9,7 @@ import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
+import com.sky.dto.PasswordEditDTO;
 import com.sky.entity.Employee;
 import com.sky.exception.AccountLockedException;
 import com.sky.exception.AccountNotFoundException;
@@ -29,8 +30,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
     private EmployeeMapper employeeMapper;
-    @Autowired
-    private EmployeeService employeeService;
 
     /**
      * 员工登录
@@ -150,6 +149,35 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         //设置当前记录创建人id和修改人id
         //employee.setUpdateUser(BaseContext.getCurrentId());
+        employeeMapper.update(employee);
+    }
+
+
+    /**
+     * 修改密码
+     * @param passwordEditDTO
+     */
+    @Override
+    public void editPassword(PasswordEditDTO passwordEditDTO) {
+        Long currentId = BaseContext.getCurrentId();
+        passwordEditDTO.setEmpId(currentId);
+        String oldPassword = passwordEditDTO.getOldPassword();
+        String newPassword = passwordEditDTO.getNewPassword();
+        oldPassword = DigestUtils.md5DigestAsHex(oldPassword.getBytes());
+        newPassword = DigestUtils.md5DigestAsHex(newPassword.getBytes());
+        passwordEditDTO.setOldPassword(oldPassword);
+        passwordEditDTO.setNewPassword(newPassword);
+
+        Employee byId = employeeMapper.getById(passwordEditDTO.getEmpId());
+        if(byId == null) {
+            throw new AccountNotFoundException(MessageConstant.ACCOUNT_NOT_FOUND);
+        }
+        if (!byId.getPassword().equals(passwordEditDTO.getOldPassword())){
+            throw new PasswordErrorException(MessageConstant.PASSWORD_ERROR);
+        }
+        Employee employee = new Employee();
+        employee.setPassword(passwordEditDTO.getNewPassword());
+        employee.setId(passwordEditDTO.getEmpId());
         employeeMapper.update(employee);
     }
 

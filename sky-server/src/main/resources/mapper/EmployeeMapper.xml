@@ -44,4 +44,7 @@
         </set>
         where id = #{id}
     </update>
+    <update id="editPassword">
+        update employee set password = #{newPassword} where id = #{empId} and password = #{oldPassword}
+    </update>
 </mapper>
